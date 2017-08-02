@@ -1,0 +1,57 @@
+{
+    "credentials": {
+        "network_id": "byfn",
+        "orderers": [
+            {
+                "discovery": "grpcs://localhost:7050",
+                "msp_id": "Org1MSP",
+                "tls_certificate": "ord_1"
+            }
+        ],
+        "cas": [
+            {
+                "api": "https://localhost:7054",
+                "msp_id": "Org1MSP",
+                "users": [
+                    {
+                        "enrollId": "admin",
+                        "enrollSecret": "adminpw"
+                    }
+                ],
+                "tls_certificate": "cas_1"
+            }
+        ],
+        "peers": [
+            {
+                "discovery": "grpcs://localhost:7051",
+                "events": "grpcs://localhost:7053",
+                "msp_id": "Org1MSP",
+                "tls_certificate": "peer_1"
+            }
+        ],
+        "app": {
+            "channel_id": "mychannel",
+            "chaincode_id": "marbles",
+            "chaincode_version": "1.0",
+            "block_delay": 10000
+        },
+        "tls_certificates": {
+            "cert_1": {
+                "common_name": "ca_peerOrg1",
+                "pem": "artifacts/channel/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"
+            },
+            "ord_1": {
+                "common_name": "orderer.example.com",
+                "pem": "artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt"
+            },
+            "cas_1": {
+                "common_name": "ca.org1.example.com",
+                "pem": "artifacts/channel/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"
+            },
+            "peer_1": {
+                "common_name": "peer0.org1.example.com",
+                "pem": "artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+            }
+        }
+    }
+}

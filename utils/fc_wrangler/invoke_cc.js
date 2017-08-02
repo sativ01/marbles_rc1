@@ -7,6 +7,7 @@ module.exports = function (g_options, logger) {
 	var common = require(path.join(__dirname, './common.js'))(logger);
 	var EventHub = require('fabric-client/lib/EventHub.js');
 	var utils = require('fabric-client/lib/utils.js');
+	var TransactionID = require('fabric-client/lib/TransactionID.js');
 	var invoke_cc = {};
 
 	if (!g_options) g_options = {};
@@ -37,6 +38,7 @@ module.exports = function (g_options, logger) {
 		var chain = obj.chain;
 		var nonce = utils.getNonce();
 		var cbCalled = false;
+		var userContext = chain._clientContext.getUserContext();
 
 		// send proposal to endorser
 		var request = {
@@ -45,7 +47,8 @@ module.exports = function (g_options, logger) {
 			chaincodeVersion: options.chaincode_version,
 			fcn: options.cc_function,
 			args: options.cc_args,
-			txId: chain.buildTransactionID(nonce, obj.submitter),
+			//txId: chain.buildTransactionID(nonce, obj.submitter),
+			txId: new TransactionID(userContext),
 			nonce: nonce,
 		};
 		logger.debug('[fcw] Sending invoke req', request);
@@ -53,7 +56,7 @@ module.exports = function (g_options, logger) {
 		// Setup EventHub
 		if (options.event_url) {
 			logger.debug('[fcw] listening to event url', options.event_url);
-			eventhub = new EventHub();
+			eventhub = new EventHub(chain._clientContext);
 			eventhub.setPeerAddr(options.event_url, {
 				pem: options.peer_tls_opts.pem,
 				'ssl-target-name-override': options.peer_tls_opts.common_name		//can be null if cert matches hostname

@@ -4,6 +4,7 @@
 
 module.exports = function (logger) {
 	var utils = require('fabric-client/lib/utils.js');
+	var TransactionID = require('fabric-client/lib/TransactionID.js');
 	var query_cc = {};
 
 	//-------------------------------------------------------------------
@@ -22,7 +23,7 @@ module.exports = function (logger) {
 		logger.debug('[fcw] Querying Chaincode: ' + options.cc_function + '()');
 		var chain = obj.chain;
 		var nonce = utils.getNonce();
-
+		var userContext = chain._clientContext.getUserContext();
 		// send proposal to peer
 		var request = {
 			chainId: options.channel_id,
@@ -30,7 +31,8 @@ module.exports = function (logger) {
 			chaincodeVersion: options.chaincode_version,
 			fcn: options.cc_function,
 			args: options.cc_args,
-			txId: chain.buildTransactionID(nonce, obj.submitter),
+			//txId: chain.buildTransactionID(nonce, obj.submitter),
+			txId: new TransactionID(userContext),
 			nonce: nonce,
 		};
 		var debug = {												// this is just for console printing, no NONCE here
@@ -39,7 +41,8 @@ module.exports = function (logger) {
 			chaincodeVersion: options.chaincode_version,
 			fcn: options.cc_function,
 			args: options.cc_args,
-			txId: chain.buildTransactionID(nonce, obj.submitter),
+			//txId: chain.buildTransactionID(nonce, obj.submitter),
+			txId: new TransactionID(userContext),
 		};
 		logger.debug('[fcw] Sending query req', debug);
 
@@ -48,7 +51,7 @@ module.exports = function (logger) {
 		).then(
 			function (response_payloads) {
 				var formatted = format_query_resp(response_payloads);
-
+				console.log('FUNCTION =====>' + request.fcn);
 				// --- response looks bad -- //
 				if (formatted.parsed == null) {
 					logger.debug('[fcw] Query response is empty', formatted.raw);

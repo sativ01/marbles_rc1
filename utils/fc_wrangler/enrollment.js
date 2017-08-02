@@ -47,7 +47,7 @@ module.exports = function (logger) {
 		var client = null;
 		try {
 			client = new HFC();
-			chain = client.newChain(options.channel_id);
+			chain = client.newChannel(options.channel_id);
 		}
 		catch (e) {
 			//it might error about 1 chain per network, but that's not a problem just continue
@@ -128,7 +128,7 @@ module.exports = function (logger) {
 	// Get Submitter - ripped this function off from fabric-client
 	function getSubmitter(client, options) {
 		var member;
-		return client.getUserContext(options.enroll_id).then((user) => {
+		return client.getUserContext(options.enroll_id, true).then((user) => {
 			if (user && user.isEnrolled()) {
 				logger.info('[fcw] Successfully loaded member from persistence');
 				return user;

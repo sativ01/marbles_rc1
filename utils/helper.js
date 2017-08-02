@@ -314,12 +314,12 @@ module.exports = function (config_filename, logger) {
 				return helper.config[marbles_field];
 			}
 			else {
-				logger.warn('"' + marbles_field + '" not found in config json: ' + config_path);
+				console.log('"' + marbles_field + '" not found in config json: ' + config_path);
 				return null;
 			}
 		}
 		catch (e) {
-			logger.warn('"' + marbles_field + '" not found in config json: ' + config_path);
+			console.log('"' + marbles_field + '" not found in config json: ' + config_path);
 			return null;
 		}
 	}

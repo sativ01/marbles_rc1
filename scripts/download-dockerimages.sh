@@ -8,7 +8,7 @@
 
 dockerFabricPull() {
   local FABRIC_TAG=$1
-  for IMAGES in peer orderer couchdb ccenv javaenv kafka zookeeper; do
+  for IMAGES in peer orderer couchdb ccenv javaenv kafka zookeeper tools; do
       echo "==> FABRIC IMAGE: $IMAGES"
       echo
       docker pull hyperledger/fabric-$IMAGES:$FABRIC_TAG
@@ -59,8 +59,8 @@ while getopts "\?hc:f:" opt; do
   esac
 done
 
-: ${CA_TAG:="x86_64-1.0.0-alpha"}
-: ${FABRIC_TAG:="x86_64-1.0.0-alpha"}
+: ${CA_TAG:="x86_64-1.0.0-rc1"}
+: ${FABRIC_TAG:="x86_64-1.0.0-rc1"}
 
 echo "===> Pulling fabric Images"
 dockerFabricPull ${FABRIC_TAG}

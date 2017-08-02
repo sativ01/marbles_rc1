@@ -8,6 +8,7 @@ module.exports = function (logger) {
 	var Peer = require('fabric-client/lib/Peer.js');
 	//var EventHub = require('fabric-client/lib/EventHub.js');
 	var utils = require('fabric-client/lib/utils.js');
+	var TransactionID = require('fabric-client/lib/TransactionID.js');
 	var deploy_cc = {};
 
 	//-------------------------------------------------------------------
@@ -30,6 +31,7 @@ module.exports = function (logger) {
 	deploy_cc.install_chaincode = function (obj, options, cb) {
 		logger.debug('[fcw] Installing Chaincode');
 		var chain = obj.chain;
+		var userContext = chain._clientContext.getUserContext();
 
 		try {
 			for (var i in options.peer_urls) {
@@ -52,7 +54,8 @@ module.exports = function (logger) {
 			chaincodePath: options.path_2_chaincode,		//rel path from /server/libs/src/ to chaincode folder ex: './marbles_chaincode'
 			chaincodeId: options.chaincode_id,
 			chaincodeVersion: options.chaincode_version,
-			txId: chain.buildTransactionID(nonce, obj.submitter),
+			//txId: chain.buildTransactionID(nonce, obj.submitter),
+			txId: new TransactionID(userContext),
 			nonce: nonce
 		};
 		logger.debug('[fcw] Sending install req', request);
@@ -100,6 +103,7 @@ module.exports = function (logger) {
 	deploy_cc.instantiate_chaincode = function (obj, options, cb) {
 		logger.debug('[fcw] Instantiating Chaincode', options);
 		var chain = obj.chain;
+		var userContext = chain._clientContext.getUserContext();
 		//var eventhub;
 
 		try {
@@ -128,7 +132,8 @@ module.exports = function (logger) {
 			chaincodeVersion: options.chaincode_version,
 			fcn: 'init',
 			args: options.cc_args,
-			txId: chain.buildTransactionID(nonce, obj.submitter),
+			//txId: chain.buildTransactionID(nonce, obj.submitter),
+			txId: new TransactionID(userContext),
 			nonce: nonce,
 		};
 		logger.debug('[fcw] Sending instantiate req', request);

@@ -14,3 +14,4 @@ app_state*
 /utils/fc_wrangler/kvs
 blockchain_creds3.json
 blockchain_creds4.json
+/node_modules

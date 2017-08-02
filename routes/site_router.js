@@ -33,6 +33,7 @@ function get_credential_data() {
 		chaincode_version: helper.getChaincodeVersion(),
 		marble_owners: helper.getMarbleUsernames(),
 	};
+	console.log("==> marbles owners:" + ret.marble_owners);
 	for (var i in ret) {
 		if (ret[i] == null) ret[i] = '';			//set to blank if not found
 	}

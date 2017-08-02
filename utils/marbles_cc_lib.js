@@ -9,7 +9,7 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 
 	//check if chaincode exists
 	marbles_chaincode.check_if_already_deployed = function (options, cb) {
-		console.log('');
+		console.log('===>Checking for chaincode...');
 		logger.info('Checking for chaincode...');
 
 		var opts = {
@@ -25,9 +25,11 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			}
 			else {
 				if (resp.parsed == null || isNaN(resp.parsed)) {	 //if nothing is here, no chaincode
+					console.log('===>Chaincode NOT found');
 					if (cb) return cb({ error: 'chaincode not found' }, resp);
 				}
 				else {
+					console.log('===>Chaincode  found');
 					if (cb) return cb(null, resp);
 				}
 			}
@@ -36,7 +38,7 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 
 	//check chaincode version
 	marbles_chaincode.check_version = function (options, cb) {
-		console.log('');
+		console.log('===>Checking chaincode and ui compatibility');
 		logger.info('Checking chaincode and ui compatibility...');
 
 		var opts = {

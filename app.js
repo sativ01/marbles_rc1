@@ -184,6 +184,7 @@ function setup_marbles_lib() {
 					var user_base = null;
 					if (process.env.app_first_setup === 'yes') user_base = helper.getMarbleUsernames();
 					create_assets(user_base); 					//builds marbles, then starts webapp
+					console.log('\n----------------------------- Created Users and marbles  -----------------------------\n');
 				}
 			});
 		}
@@ -250,13 +251,14 @@ function saferNames(usernames) {
 
 // create marbles and marble owners, owners first
 function create_assets(build_marbles_users) {
+	console.log("====USERS:" + build_marbles_users);
 	build_marbles_users = saferNames(build_marbles_users);
-	logger.info('Creating marble owners and marbles');
+	console.log('Creating marble owners and marbles');
 	var owners = [];
 
 	if (build_marbles_users && build_marbles_users.length > 0) {
 		async.each(build_marbles_users, function (username, owner_cb) {
-			logger.debug('- creating marble owner: ', username);
+			console.log('- creating marble owner: ', username);
 
 			// --- Create Each User --- //
 			create_owners(0, username, function (errCode, resp) {
@@ -265,7 +267,7 @@ function create_assets(build_marbles_users) {
 			});
 
 		}, function (err) {
-			logger.info('finished creating owners, now for marbles');
+			console.log('finished creating owners, now for marbles');
 			if (err == null) {
 
 				var marbles = [];
@@ -275,13 +277,13 @@ function create_assets(build_marbles_users) {
 						marbles.push(owners[i]);
 					}
 				}
-				logger.debug('prepared marbles obj', marbles.length, marbles);
+				console.log('prepared marbles obj', marbles.length, marbles);
 
 				// --- Create Marbles--- //
 				async.each(marbles, function (owner_obj, marble_cb) { 			//iter through each one 
 					create_marbles(owner_obj.id, owner_obj.username, marble_cb);
 				}, function (err) {												//marble owner creation finished
-					logger.debug('- finished creating asset');
+					console.log('- finished creating asset');
 					if (err == null) {
 						all_done();												//delay for peer catch up
 					}
@@ -290,7 +292,7 @@ function create_assets(build_marbles_users) {
 		});
 	}
 	else {
-		logger.debug('- there are no new marble owners to create');
+		console.log('- there are no new marble owners to create');
 		all_done();
 	}
 }
@@ -307,7 +309,7 @@ function create_owners(attempt, username, cb) {
 	marbles_lib.register_owner(options, function (e, resp) {
 		if (e != null) {
 			console.log('');
-			logger.error('error creating the marble owner', e, resp);
+			console.log('error creating the marble owner', e, resp);
 			cb(e, resp);
 		}
 		else {
@@ -436,7 +438,9 @@ function setupWebSocket() {
 
 				//register marble owners
 				else if (data.configure === 'register') {
+					console.log('--------------------------- CREATING OWNERS AND MARBLES ---------------------------');
 					create_assets(data.build_marble_owners);
+					console.log('--------------------------- CREATING OWNERS AND MARBLES ---------------------------');
 				}
 			}
 			else if (data) {

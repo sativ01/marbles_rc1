@@ -10,7 +10,7 @@
         ],
         "cas": [
             {
-                "api": "https://localhost:8054",
+                "api": "https://localhost:7054",
                 "msp_id": "Org1MSP",
                 "users": [
                     {
@@ -23,9 +23,9 @@
         ],
         "peers": [
             {
-                "name": "fabric-peer-2a",
-                "discovery": "grpcs://localhost:8051",
-                "events": "grpcs://localhost:8053",
+                "name": "peer0",
+                "discovery": "grpcs://localhost:7051",
+                "events": "grpcs://localhost:7053",
                 "msp_id": "Org1MSP",
                 "tls_certificate": "cert_1"
             }
